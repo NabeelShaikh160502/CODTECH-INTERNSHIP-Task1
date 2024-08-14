@@ -1,0 +1,122 @@
+# pandas
+ import pandas as pd
+ # numpy
+ import numpy as np
+ # matplotlib
+ import matplotlib.pyplot as plt
+ # seaborn
+ import seaborn as sns
+
+ df = pd.read_csv("NYSERDA-Supported_Air_Source_Heat_Pump_Projects__2017-2019.csv")
+
+ #task1 
+#show the first 10 data
+ df.head(10)
+
+ #task2
+ #show the last 10 rows
+ df.tail(10)
+
+ #task 3
+ #show the size of the data
+ df.shape
+
+ df.head(3)
+
+ df.columns
+
+ # Sample data creation (In practice, load your actual dataset)
+data = {
+    'Application Number': range(1, 101),
+    'City': np.random.choice(['CityA', 'CityB', 'CityC'], 100),
+    'County': np.random.choice(['CountyA', 'CountyB', 'CountyC'], 100),
+    'State': np.random.choice(['StateA', 'StateB'], 100),
+    'Zip Code': np.random.randint(10000, 99999, 100),
+    'Gas Utility': np.random.choice(['Utility1', 'Utility2'], 100),
+    'Electric Utility': np.random.choice(['Utility1', 'Utility2'], 100),
+    'Building Type': np.random.choice(['Residential', 'Commercial'], 100),
+    'Home Conditioned Area Sqft': np.random.randint(500, 5000, 100),
+    'Percentage of sq. ft. conditioned': np.random.uniform(50, 100, 100),
+    'Building Year Built': np.random.randint(1900, 2020, 100),
+    'Primary Heating Fuel Type': np.random.choice(['Gas', 'Electric', 'Oil'], 100),
+    'Primary Heating System': np.random.choice(['SystemA', 'SystemB'], 100),
+    'Other Fuel Type': np.random.choice(['TypeA', 'TypeB', 'None'], 100),
+    'Other Primary Heating System': np.random.choice(['SystemA', 'SystemB', 'None'], 100),
+    'Primary Cooling System Age': np.random.randint(0, 30, 100),
+    'Total Project Cost (USD)': np.random.uniform(1000, 50000, 100),
+    'Total NYSERDA Incentive (USD)': np.random.uniform(500, 10000, 100),
+    'Whole House Solution': np.random.choice(['Yes', 'No'], 100),
+    'Application Approval Date': pd.date_range(start='1/1/2020', periods=100, freq='M'),
+    'Application Status': np.random.choice(['Approved', 'Pending', 'Denied'], 100)
+}
+
+df = pd.DataFrame(data)
+
+ # Display the first few rows of the dataset
+ print(df.head())
+
+ # Summary statistics and info
+ print(df.info())
+ print(df.describe())
+
+ # Check for missing values
+ print(df.isnull().sum())
+
+ # Data Cleaning
+ df.fillna(method='ffill', inplace=True)
+
+ # Visualize Data Distribution
+ # Histograms for numerical features
+ df.hist(bins=20, figsize=(20, 15))
+ plt.suptitle('Histograms of Numerical Features', fontsize=20)
+ plt.show()
+
+# Count plots for categorical features
+ plt.figure(figsize=(15, 10))
+ sns.countplot(y='City', data=df)
+ plt.title('Count Plot for City', fontsize=15)
+ plt.show()
+
+ sns.countplot(y='Building Type', data=df)
+ plt.title('Count Plot for Building Type', fontsize=15)
+ plt.show()
+
+ sns.countplot(y='Primary Heating Fuel Type', data=df)
+ plt.title('Count Plot for Primary Heating Fuel Type', fontsize=15)
+ plt.show()
+
+ # Analyze Relationships and Correlations
+ # Pairplot for numerical features
+ sns.pairplot(df[['Home Conditioned Area Sqft', 'Percentage of sq. ft. conditioned', 'Primary Cooling System Age', 'Total Project Cost (USD)', 'Total NYSERDA Incentive (USD)']])
+ plt.suptitle('Pairplot of Numerical Features', y=1.02)
+ plt.show()
+
+ # Scatter plot between 'Total Project Cost (USD)' and 'Total NYSERDA Incentive (USD)'
+ plt.figure(figsize=(10, 6))
+ sns.scatterplot(x='Total Project Cost (USD)', y='Total NYSERDA Incentive (USD)', data=df)
+ plt.title('Scatter Plot between Total Project Cost and Total NYSERDA Incentive', fontsize=15)
+ plt.xlabel('Total Project Cost (USD)', fontsize=12)
+ plt.ylabel('Total NYSERDA Incentive (USD)', fontsize=12)
+ plt.show()
+
+ # Scatter plot between 'Home Conditioned Area Sqft' and 'Total Project Cost (USD)'
+ plt.figure(figsize=(10, 6))
+ sns.scatterplot(x='Home Conditioned Area Sqft', y='Total Project Cost (USD)', data=df)
+ plt.title('Scatter Plot between Home Conditioned Area Sqft and Total Project Cost', fontsize=15)
+ plt.xlabel('Home Conditioned Area Sqft', fontsize=12)
+ plt.ylabel('Total Project Cost (USD)', fontsize=12)
+ plt.show()
+
+ # Select only numeric columns for correlation heatmap
+ numeric_columns = df.select_dtypes(include=[np.number]).columns
+ plt.figure(figsize=(12, 8))
+ sns.heatmap(df[numeric_columns].corr(), annot=True, cmap='coolwarm')
+ plt.title('Correlation Heatmap', fontsize=20)
+ plt.show()
+
+ # Detect Outliers
+ # Boxplot to detect outliers in numerical features
+ plt.figure(figsize=(15, 10))
+ sns.boxplot(data=df[['Home Conditioned Area Sqft', 'Percentage of sq. ft. conditioned', 'Primary Cooling System Age', 'Total Project Cost (USD)', 'Total NYSERDA Incentive (USD)']], orient='h')
+ plt.title('Boxplot for Outlier Detection')
+ plt.show()
